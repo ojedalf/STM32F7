@@ -41,21 +41,8 @@
 #     git clone https://git.code.sf.net/p/openocd/code openocd
 #
 #  6. cd openocd
-
-#  7. It is very important to apply all needed patches to avoid errors when building the openocd
-#     source code, by the moment install the patch openocd-for-cygwin.patch from:
-# 	  https://mindchasers.com/static/patches/openocd-for-cygwin.patch
 #
-#  8. Apply the patch:
-#     git am < openocd-for-cygwin.patch
-#
-#  9. If the patch fails with rebase error, type:
-#     git am --abort
-#
-# 10. If the patch fails to apply, type:
-#     git apply --reject --whitespace=fix mychanges.patch 
-#
-# 11. After applying the patch succesfully, type:
+#  7. Install Openocd, type:
 #     cd /build/openocd           // change directory
 #     ./bootstrap                 // when building from the git repository
 #     mkdir build                 // Create directory
@@ -64,8 +51,28 @@
 #     make                        // will build OpenOCD and place the final executable in './src/'
 #     make install                // places all of the files in the required location
 #
-# 12. Confirm that openocd is installed by typing:
+# 8. Confirm that openocd is installed by typing:
 #     which openocd 
+#
+# 9. Enable Telnet in windows
+#
+#
+#----------------------------------------------------------------------------------------------------------
+#  In case any error appear during openocd installation, run the following instructions and then try
+#  step 7 again:
+#
+#  1. Install the patch openocd-for-cygwin.patch from:
+# 	  https://mindchasers.com/static/patches/openocd-for-cygwin.patch
+#
+#  2. Apply the patch:
+#     git am < openocd-for-cygwin.patch
+#
+#  3. If the patch fails with rebase error, type:
+#     git am --abort
+#
+#  4. If the patch fails to apply, type:
+#     git apply --reject --whitespace=fix openocd-for-cygwin.patch 
+#------------------------------------------------------------------------------------------------------------
 #
 #
 #---------------------------------------------------------------------------------------------

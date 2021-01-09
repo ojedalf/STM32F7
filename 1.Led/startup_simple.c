@@ -26,9 +26,6 @@
    
    The Vector Table Offset Register (VTOR) which defines the interrupt vector table
    location is programmed by default to the Flash 0x00 location.
-   
-   
-   
 ----------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------------
@@ -203,6 +200,3 @@ void Default_Handler(void) {
 
 	while(1);
 }
-
-
-

@@ -5,20 +5,8 @@
 -------------------------------------------------------------------------------
    Description:
 -------------------------------------------------------------------------------
-   The FFT is implemented in a serial processing form using a radix-2 algorithm.
-   The input buffers need first to be filled with 64 samples from the real and 
-   imaginary input signals before processing their frequency response.
-   
-   For 64 points, 6 stages are required, each with N/2 butterflies. Therefore,
-   6(N/2) = 192 cycles are required to compute the FFT for 64 input samples.
-   
-   To guarantee an output signal value of one in magnitud and avoid overflow, 
-   the input must be limited to 1/sqrt(2). After every butterfly, the magnitude
-   is doubled, thus an scaling of 1/2 is required.
-   
-   Rounding to the nearest value is applied after every multiplier when passing
-   from 32 to 16 bits in order to avoid DC bias.
-   
+   This is a very simple blinking led that employs a systick timer interrupt
+   in order to blink the led every 5 seconds.
    
  -------------------------------------------------------------------------------
    Core registers:
@@ -62,17 +50,22 @@
    ___________________________
   |  ______    ____________   |    
   | | Core |  | Peripherals|  |
-  |___________________________|   
-  
+  |       ________            |
+  |      |Memories|           |
+  |___________________________|
+
   
 -------------------------------------------------------------------------------
    SysTick Counter:
 -------------------------------------------------------------------------------    
   It is a countdown timer that runs on the Processor clock
 
-  HSI is used as the system clock at reset by default
+  HSI is used as the system clock at reset by default.
+  HCLK is the processor clock and equals to HSI/AHB_PRESCALER.
 
-  HSI   --->|AHB PRESCALER|---|/8|---2MHz---->|SysTick|
+                             ------------------HCLK--------------------
+                             ↑                                        ↓
+  HSI   --->|AHB PRESCALER|-----|/8|-----------External Clock---->|SysTick|
   16MHz      /Not divided
   
 -------------------------------------------------------------------------------*/
@@ -108,18 +101,27 @@
 
 
 /*--------------------------------------------------------
-  SysTick IRQ Handler
+  SysTick IRQ Handler (ISR)
+  --------------------------------------------------------
+  The interrupt is generated when the down-counter reaches
+  zero. In this case every second.
+  
+  Some exceptions are permanently enabled; these include
+  the reset and NMI interrupts, but also the Systick Timer.   
  *------------------------------------------------------*/
-void SysTick_Handler (void) {                               
+void SysTick_Handler (void) 
+{                               
    static uint32_t ticks;
   
-   switch (ticks++) {
-      case  0: GPIOI_ODR = 0x00000002;; break;
-      case  5: GPIOI_ODR = 0x00000000;; break;
+   switch (ticks++) 
+   {
+      case  0: GPIOI_ODR = 0x00000002;; break;  // Turn on LED
+      case  5: GPIOI_ODR = 0x00000000;; break;  // Turn off LED
       case  9: ticks  = 0; break;
       default:
-         if (ticks > 10) {
-         ticks = 0;
+         if (ticks > 10) 
+         {
+            ticks = 0;
          }
   }
 }
@@ -138,25 +140,10 @@ void main()
    GPIOI_OTYPER  = 0x00000000;  // 0-Push pull, 2-Open Drain
    GPIOI_OSPEEDR = 0x00000000;  // 0-Low Speed, 4-medium, 8-high, C-very high
    GPIOI_PUPDR   = 0x00000000;  // 0-No, 4-PU, 8-PD, C-reserved
-      
-   // Set interrupt priority   
-      
-      
-      
-   // Enable Interrupts   
-   __asm volatile("cpsie i"); /* enable interrupts */   
-      
  
-   SYST_RVR = 0x00FFFFFF;    // Reload Value, 16777215*(1/2MHz) = 8.38 seg
-   SYST_CSR = 0x00000007;    // Enable systick counter
+   // Configure Systick Timer
+   SYST_RVR = 0x00F42400;       // Reload Value, 16000000*(1/HCLK) = 1 seg
+   SYST_CSR = 0x00000007;       // | Processor clock | Enable Interrupt | Enable systick counter
    
-   while(1);
-   
+   while(1);  
 }
-
-
-
-
-
-
-

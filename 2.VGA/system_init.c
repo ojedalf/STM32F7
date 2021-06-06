@@ -188,7 +188,7 @@ void LTDC_init(void)
    ptrLtdcConfig -> vStartPosition   = V_START_POSITION;
    ptrLtdcConfig -> vStopPosition    = V_STOP_POSITION;
    ptrLtdcConfig -> pixelFormat      = RGB565;
-   ptrLtdcConfig -> ptrImageBuffer   = image_data_480x270;  //pirilika;
+   ptrLtdcConfig -> ptrImageBuffer   = pirilika;
    ptrLtdcConfig -> bufferLineLength = BUFFER_LINE_LENGTH_REG;
    ptrLtdcConfig -> bufferPitch      = BUFFER_PITCH;
    ptrLtdcConfig -> bufferNumOfLines = BUFFER_LINES;
@@ -203,7 +203,7 @@ int32_t system_init(void)
 {
   static uint32_t initialized = FALSE;
 
-   if (initialized = FALSE)
+   if (initialized != TRUE)
    {
       /* 1.- PIN configuration */
       GPIO_init();

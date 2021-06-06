@@ -17,6 +17,7 @@
   Include files
 *------------------------------------------------------*/      
 #include "ltdc.h"
+#include "errors.h"
 
 /* LTDC Registers Base address */
 LTDC_TypeDef * ltdcRegisters = (LTDC_TypeDef *)LTDC_BASE;
@@ -28,30 +29,34 @@ LTDC_Layer_TypeDef * ltdcLayer1Registers = (LTDC_Layer_TypeDef *)LTDC_Layer1_BAS
 -----------------------------------------------------------------*/    
 int32_t ltdcSyncConfig(uint32_t hSync, uint32_t vSync, uint32_t hBackPorch, uint32_t vBackPorch)
 {
+   int32_t erc = ERROR;
    LTDC_TypeDef * ltdcDev = ltdcRegisters;
 
    /* Check Input Parameters */
-   if ((hSync > HSYNCMAX) | (vSync > VSYNCMAX) | (hBackPorch > HBPMAX) | (vBackPorch > VBPMAX))
+   if ((hSync <= HSYNCMAX) | (vSync <= VSYNCMAX) | (hBackPorch <= HBPMAX) | (vBackPorch <= VBPMAX))
    {
       ltdcDev -> SSCR |= (hSync << LTDC_SSCR_HSW_Pos);  
       ltdcDev -> SSCR |= (vSync << LTDC_SSCR_VSH_Pos);
 
       ltdcDev -> BPCR |= (hBackPorch << LTDC_BPCR_AHBP_Pos);
       ltdcDev -> BPCR |= (vBackPorch << LTDC_BPCR_AVBP_Pos);
+
+      erc = OK;
    }
    else
-      return LTDC_ERROR_SYNC;
+      return erc;
 }
 
 
 /*---------------------------------------------------------------- 
   Area configuration
 -----------------------------------------------------------------*/ 
-void ltdcAreaConfig(uint32_t activeZoneWidth, uint32_t activeZoneHeight, uint32_t totalAreaWidth, uint32_t totalAreaHeight, uint32_t backgroundColor)
+int32_t ltdcAreaConfig(uint32_t activeZoneWidth, uint32_t activeZoneHeight, uint32_t totalAreaWidth, uint32_t totalAreaHeight, uint32_t backgroundColor)
 {
+   int32_t erc = ERROR;
    LTDC_TypeDef * ltdcDev = ltdcRegisters;
 
-   if( (activeZoneWidth > ACTIVE_WMAX) | (activeZoneHeight > ACTIVE_HMAX) | (totalAreaWidth > ACTIVE_TOTAL_WMAX) | (totalAreaHeight > ACTIVE_TOTAL_HMAX))
+   if( (activeZoneWidth <= ACTIVE_WMAX) | (activeZoneHeight <= ACTIVE_HMAX) | (totalAreaWidth <= ACTIVE_TOTAL_WMAX) | (totalAreaHeight <= ACTIVE_TOTAL_HMAX))
    {
       /* the Active Zone */
       ltdcDev -> AWCR |= (activeZoneWidth << LTDC_AWCR_AAW_Pos);          
@@ -66,18 +71,20 @@ void ltdcAreaConfig(uint32_t activeZoneWidth, uint32_t activeZoneHeight, uint32_
 
       // Configure the synchronous signals and clock polarity
       ltdcDev -> GCR &= ~(LTDC_GCR_HSPOL | LTDC_GCR_VSPOL | LTDC_GCR_DEPOL | LTDC_GCR_PCPOL);
+
+      erc = OK;
    }
    else
-      LTDC_ERROR_AREA;
+      return erc;
 }
 
 
 /*---------------------------------------------------------------- 
    Layer Configuration
 -----------------------------------------------------------------*/
-void ltdcLayerConfig(struct ltdcConfig * ptrLtdcConfig)
+int32_t ltdcLayerConfig(struct ltdcConfig * ptrLtdcConfig)
 {
-
+   int32_t erc = ERROR;
    LTDC_Layer_TypeDef * ltdcLayer1Dev = ltdcLayer1Registers;
 
    if (ptrLtdcConfig -> ptrImageBuffer != NULL)
@@ -102,9 +109,11 @@ void ltdcLayerConfig(struct ltdcConfig * ptrLtdcConfig)
 
       // Enable Layer 1
       ltdcLayer1Dev -> CR |= LTDC_LxCR_LEN;
+
+      erc = OK;
    }
    else
-      LTDC_ERROR_BUFF;
+      return erc;
 }
 
 

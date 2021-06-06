@@ -19,8 +19,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>                
-#include "480x272.h"
-//#include "pirilika480x272.h"                
+//#include "480x272.h"
+#include "pirilika480x272.h"                
 
 
 /*--------------------------------------------------------
@@ -501,7 +501,7 @@ int32_t ltdcSyncConfig(uint32_t hSync, uint32_t vSync, uint32_t hBackPorch, uint
   totalAreaHeight  IN -
   backgroundColor  IN -
 -----------------------------------------------------------------*/ 
-void ltdcAreaConfig(uint32_t activeZoneWidth, uint32_t activeZoneHeight, uint32_t totalAreaWidth, uint32_t totalAreaHeight, uint32_t backgroundColor);
+int32_t ltdcAreaConfig(uint32_t activeZoneWidth, uint32_t activeZoneHeight, uint32_t totalAreaWidth, uint32_t totalAreaHeight, uint32_t backgroundColor);
 
 
 
@@ -514,7 +514,7 @@ void ltdcAreaConfig(uint32_t activeZoneWidth, uint32_t activeZoneHeight, uint32_
   Parameters:
   ptrLtdcConfig IN - 
 -----------------------------------------------------------------*/
-void ltdcLayerConfig(struct ltdcConfig * ptrLtdcConfig);
+int32_t ltdcLayerConfig(struct ltdcConfig * ptrLtdcConfig);
 
 /*---------------------------------------------------------------- 
    Start the LTDC Controller

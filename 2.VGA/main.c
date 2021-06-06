@@ -15,10 +15,8 @@
 -------------------------------------------------------------------------------*/
 
 
-
-
 /*--------------------------------------------------------
-  Libraries
+  Include Files
  *------------------------------------------------------*/
 #include <stdlib.h>
 #include <stdio.h>
@@ -53,13 +51,13 @@ void main()
    /* Initialize the system */
    system_init();
 
-   /* Application */
+   /* Start the LTDC Controller */
+   ltdcStart();
+
    for(;;)
    {  
-      LTDC -> SRCR |= LTDC_SRCR_VBR;                      // reload shadow registers on vertical blanking period
-      while ((LTDC->CDSR & LTDC_CDSR_VSYNCS) == 0);       // wait for next frame
-      
-      while ((LTDC->CDSR & LTDC_CDSR_VSYNCS) == 1);
+      /* Reload the LTDC shadow registers on each vertical blanking period*/
+      ltdcReload();
    }
    
 }

@@ -15,7 +15,7 @@
 
 
 /*--------------------------------------------------------
-  Libraries
+  Include Files
  *------------------------------------------------------*/      
 #include "system_init.h"
 
@@ -37,7 +37,6 @@ struct ltdcConfig * ptrLtdcConfig;
 *------------------------------------------------------*/
 void GPIO_init(void)
 {   
-
    // Enable all ports clocks for AHB1
    RCC -> AHB1ENR = 0x00107FF;
    
@@ -117,8 +116,6 @@ void GPIO_init(void)
 *-----------------------------------------------------------------------------------------------------*/
 void system_clock_init(void)
 {
-
-   
    /* 1. System clock configuration (SYSCLK) - (CPU clock HCLK) */
    
    // APB2 Prescaler to set 216MHz/2 = 108MHz maximum frequency
@@ -182,39 +179,43 @@ void system_clock_init(void)
 -----------------------------------------------------------------------------------------------*/
 void LTDC_init(void)
 {
-
    ltdcSyncConfig(HSYNC_REG, VSYNC_REG, HBP_REG, VBP_REG);
 
    ltdcAreaConfig(HACTIVE_REG, VACTIVE_REG, HTOTAL_REG, VTOTAL_REG, BLACK_BACKGROUND);
 
-   /* Default parameters */
    ptrLtdcConfig -> hStartPosition   = H_START_POSITION;
    ptrLtdcConfig -> hStopPosition    = H_STOP_POSITION;
    ptrLtdcConfig -> vStartPosition   = V_START_POSITION;
    ptrLtdcConfig -> vStopPosition    = V_STOP_POSITION;
    ptrLtdcConfig -> pixelFormat      = RGB565;
-   ptrLtdcConfig -> ptrImageBuffer   = image_data_480x270;
+   ptrLtdcConfig -> ptrImageBuffer   = image_data_480x270;  //pirilika;
    ptrLtdcConfig -> bufferLineLength = BUFFER_LINE_LENGTH_REG;
    ptrLtdcConfig -> bufferPitch      = BUFFER_PITCH;
    ptrLtdcConfig -> bufferNumOfLines = BUFFER_LINES;
-
    ltdcLayerConfig(ptrLtdcConfig);
-
-   ltdcReload();
 }
 
 
 /*----------------------------------------------------------------------------------------------
    system_init 
 ----------------------------------------------------------------------------------------------*/
-void system_init()
+int32_t system_init(void)
 {
-   /* 1.- PIN configuration */
-   GPIO_init();
+  static uint32_t initialized = FALSE;
 
-   /* 2. System Clock Configuration */
-   system_clock_init();
-   
-   /* 3. LTDC Initialization */
-   LTDC_init();
+   if (initialized = FALSE)
+   {
+      /* 1.- PIN configuration */
+      GPIO_init();
+
+      /* 2. System Clock Configuration */
+      system_clock_init();
+      
+      /* 3. LTDC Initialization */
+      LTDC_init();
+
+      initialized = TRUE;
+   }
+   else
+      return SYS_INIT_ERROR;
 }

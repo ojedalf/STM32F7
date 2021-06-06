@@ -14,12 +14,13 @@
 -------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------------
-  Libraries
+  Include Files
  *------------------------------------------------------*/
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdint.h>                // Integer datatype standards
-#include "480x272.h"               // Picture 
+#include <stdint.h>                
+#include "480x272.h"
+//#include "pirilika480x272.h"                
 
 
 /*--------------------------------------------------------
@@ -31,12 +32,18 @@
 /* Error list */
 #define LTDC_ERROR_SYNC 457
 #define LTDC_ERROR_BUFF 458
+#define LTDC_ERROR_AREA 459
 
 /* Max Parameters */
 #define HSYNCMAX 1
 #define VSYNCMAX 10
 #define HBPMAX 43
 #define VBPMAX 12
+
+#define ACTIVE_WMAX 480
+#define ACTIVE_HMAX 272
+#define ACTIVE_TOTAL_WMAX 531
+#define ACTIVE_TOTAL_HMAX 288
 
 
 /*--------------------------------------------------------
@@ -88,17 +95,10 @@ typedef struct
 /*--------------------------------------------------------
   Peripheral memory map
 *--------------------------------------------------------*/
-#define PERIPH_BASE            0x40000000U /*!< Base address of : AHB/ABP Peripherals */
+#define PERIPH_BASE            0x40000000U /* Base address of : AHB/ABP Peripherals */
 #define APB2PERIPH_BASE       (PERIPH_BASE + 0x00010000U)
-
 #define LTDC_BASE             (APB2PERIPH_BASE + 0x6800U)
 #define LTDC_Layer1_BASE      (LTDC_BASE + 0x84U)
-#define LTDC_Layer2_BASE      (LTDC_BASE + 0x104U)
-
-/* Peripheral_declaration */
-#define LTDC                ((LTDC_TypeDef *)LTDC_BASE)
-#define LTDC_Layer1         ((LTDC_Layer_TypeDef *)LTDC_Layer1_BASE)
-#define LTDC_Layer2         ((LTDC_Layer_TypeDef *)LTDC_Layer2_BASE)
 
 
 /******************************************************************************/
@@ -516,6 +516,10 @@ void ltdcAreaConfig(uint32_t activeZoneWidth, uint32_t activeZoneHeight, uint32_
 -----------------------------------------------------------------*/
 void ltdcLayerConfig(struct ltdcConfig * ptrLtdcConfig);
 
+/*---------------------------------------------------------------- 
+   Start the LTDC Controller
+-----------------------------------------------------------------*/
+void ltdcStart(void);
 
 /*---------------------------------------------------------------- 
    Reload the shadow registers to active register

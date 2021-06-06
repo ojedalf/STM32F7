@@ -143,7 +143,8 @@ INCLUDES = -I ./
 # List of objects to build
 OBJS =  startup_simple.o \
 		main.o \
-      ltdc.o
+		system_init.o \
+        ltdc.o
 
 #-----------------------------------------------------------------------------------
 # Targets:
@@ -172,6 +173,9 @@ startup_simple.o: startup_simple.c
 main.o: main.c
 	arm-none-eabi-gcc -O0 -c -g -mcpu=${CPU} -mthumb main.c -I ./ 
    
+system_init.o: system_init.c
+	arm-none-eabi-gcc -O0 -c -g -mcpu=${CPU} -mthumb system_init.c -I ./ 
+
 ltdc.o: ltdc.c
 	arm-none-eabi-gcc -O0 -c -g -mcpu=${CPU} -mthumb ltdc.c -I ./    
    

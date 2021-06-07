@@ -20,7 +20,7 @@
  *------------------------------------------------------*/
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdint.h>        
+#include <stdint.h>    
 #include "system_init.h"
 
 
@@ -42,11 +42,7 @@ void main()
    uint32_t x_offset = 10;
    uint32_t y_offset = 10;
    uint32_t vx = 1;
-   uint32_t vy = 1;
-
-   // Enable Interrupts   
-   //__asm volatile("cpsie i"); /* enable interrupts */   
-
+   uint32_t vy = 1; 
 
    /* Initialize the system */
    system_init();

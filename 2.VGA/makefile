@@ -144,7 +144,7 @@ INCLUDES = -I ./
 OBJS =  startup_simple.o \
 		main.o \
 		system_init.o \
-        ltdc.o
+		ltdc.o
 
 #-----------------------------------------------------------------------------------
 # Targets:

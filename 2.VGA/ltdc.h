@@ -13,6 +13,9 @@
   
 -------------------------------------------------------------------------------*/
 
+#ifndef LTDC_H
+#define LTDC_H
+
 /*--------------------------------------------------------
   Include Files
  *------------------------------------------------------*/
@@ -20,8 +23,14 @@
 #include <stdio.h>
 #include <stdint.h>                
 //#include "480x272.h"
-#include "pirilika480x272.h"                
+#include "pirilika480x272.h"   
 
+
+#ifdef __cplusplus
+ extern "C" {
+#endif /* __cplusplus */
+
+            
 
 /*--------------------------------------------------------
   Macros
@@ -526,3 +535,8 @@ void ltdcStart(void);
 -----------------------------------------------------------------*/
 void ltdcReload(void);
 
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif /* LTDC_H */

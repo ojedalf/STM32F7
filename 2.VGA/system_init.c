@@ -36,7 +36,7 @@ struct ltdcConfig * ptrLtdcConfig;
 /*-------------------------------------------------------
   GPIO pin configuration
 *------------------------------------------------------*/
-void GPIO_init(void)
+static void GPIO_init(void)
 {   
    // Enable all ports clocks for AHB1
    RCC -> AHB1ENR = 0x00107FF;
@@ -115,7 +115,7 @@ void GPIO_init(void)
 /*----------------------------------------------------------------------------------------------------
   system_clock_init
 *-----------------------------------------------------------------------------------------------------*/
-void system_clock_init(void)
+static void system_clock_init(void)
 {
    /* 1. System clock configuration (SYSCLK) - (CPU clock HCLK) */
    
@@ -179,7 +179,7 @@ void system_clock_init(void)
 /*----------------------------------------------------------------------------------------------
   LTDC initialization 
 -----------------------------------------------------------------------------------------------*/
-void LTDC_init(void)
+static void LTDC_init(void)
 {
    ltdcSyncConfig(HSYNC_REG, VSYNC_REG, HBP_REG, VBP_REG);
 

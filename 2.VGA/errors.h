@@ -13,12 +13,20 @@
   
 -------------------------------------------------------------------------------*/
 
+#ifndef ERRORS_H
+#define ERRORS_H
+
 /*--------------------------------------------------------
   Include Files
  *------------------------------------------------------*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>                
+
+
+#ifdef __cplusplus
+ extern "C" {
+#endif /* __cplusplus */
 
 
 /*--------------------------------------------------------
@@ -37,3 +45,9 @@
 #define LTDC_ERROR_SYNC 457
 #define LTDC_ERROR_BUFF 458
 #define LTDC_ERROR_AREA 459
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif /* ERRORS_H */

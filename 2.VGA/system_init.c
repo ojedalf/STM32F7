@@ -5,12 +5,19 @@
 -------------------------------------------------------------------------------
    Description:
 -------------------------------------------------------------------------------
-   The
+   The system is initialized with all GPIO Alternate functions configured for
+   the LTDC controller. 
+
+   The system clock is configured to receive the external clock HSE as the
+   main clock and not division by the AHB prescaler is performed, therefore
+   system clock equals to HSE which is 25MHz. 
    
-   
-   
-   
-  
+   PLLSAI is used to generate the clock for the LTDC which must be configured
+   according to the LTDC datasheet (Ref1).
+
+   The LTDC is initialized according to the synchronization specs in the ROCKTECK
+   display RK043FN48H-CT672B datasheet (Ref1) embedded in the SMT32F7 discovery 
+   board.
 -------------------------------------------------------------------------------*/
 
 
@@ -36,7 +43,7 @@ struct ltdcConfig * ptrLtdcConfig;
 /*-------------------------------------------------------
   GPIO pin configuration
 *------------------------------------------------------*/
-static void GPIO_init(void)
+void GPIO_init(void)
 {   
    // Enable all ports clocks for AHB1
    RCC -> AHB1ENR = 0x00107FF;
@@ -115,7 +122,7 @@ static void GPIO_init(void)
 /*----------------------------------------------------------------------------------------------------
   system_clock_init
 *-----------------------------------------------------------------------------------------------------*/
-static void system_clock_init(void)
+void system_clock_init(void)
 {
    /* 1. System clock configuration (SYSCLK) - (CPU clock HCLK) */
    
@@ -179,7 +186,7 @@ static void system_clock_init(void)
 /*----------------------------------------------------------------------------------------------
   LTDC initialization 
 -----------------------------------------------------------------------------------------------*/
-static void LTDC_init(void)
+void LTDC_init(void)
 {
    ltdcSyncConfig(HSYNC_REG, VSYNC_REG, HBP_REG, VBP_REG);
 

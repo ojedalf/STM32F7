@@ -5,13 +5,11 @@
 -------------------------------------------------------------------------------
    Description:
 -------------------------------------------------------------------------------
-   The
-   
-   
-   
-   
-   
-  
+   This Application displays a static image with a resolution of 480x272 pixels
+   using the LTDC Controller to the ROCKTECH Display.
+
+   |Flash|--->|Driver|---->|LTDC Controller|--->|Display Panel|
+
 -------------------------------------------------------------------------------*/
 
 
